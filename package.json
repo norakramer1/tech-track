@@ -1,0 +1,23 @@
+{
+  "name": "tech-track",
+  "version": "1.0.0",
+  "description": "tech track project CMD",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/norakramer1/tech-track.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/norakramer1/tech-track/issues"
+  },
+  "homepage": "https://github.com/norakramer1/tech-track#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
