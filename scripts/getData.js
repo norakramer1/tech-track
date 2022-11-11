@@ -26,6 +26,5 @@ async function getObjectIds() {
 
 export default {
     fetchPaintings: fetchPaintings,
-    getObjectIds: getObjectIds,
-    displayPaintings: displayPaintings
+    getObjectIds: getObjectIds
 }
