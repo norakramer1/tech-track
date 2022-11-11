@@ -3,29 +3,29 @@ import { renderData } from './render.js'
 
 let API = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
 
-export const fetchPaintings = async (id) => {  
-    const dataFetch = await fetch(`${API}/${id}`)
+async function fetchPaintings(painting) {  
+    const dataFetch = await fetch(`${API}/${painting}`)
     const jsonData = await dataFetch.json()
+    console.log(jsonData)
     return jsonData
     }
 
 
-let apiCat = 'https://collectionapi.metmuseum.org/public/collection/v1/search?q=cat';
+ let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=sunflowers';
+// search?isHighlight=true&q=sunflowers
 
 
-   export let fetchObjectIds =  fetch(apiCat).then(function (response) {
-    let firstTen;
-        response.json().then(function (data) {
-            console.log(data)
-             firstTen = data.objectIDs.splice(data.objectIDs.length-10);
-            console.log(firstTen)
-            renderData(data)
-      
-        })
-    }).catch(function (error) {
-        console.log('Fetch Error:', error);
-    });
+async function getObjectIds() {
 
+    let res = await fetch(search);
+    let data = await res.json();
+    
+    return data.objectIDs.splice(data.objectIDs.length-10);
+  
+}
 
-
-
+export default {
+    fetchPaintings: fetchPaintings,
+    getObjectIds: getObjectIds,
+    displayPaintings: displayPaintings
+}

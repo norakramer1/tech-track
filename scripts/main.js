@@ -3,7 +3,7 @@ import '../styles/style.css'
 import { displayPaintings } from './getObjectIds.js'
 import * as d3 from 'd3';
 
-console.log('Hello, world!');
+// console.log('Hello, world!');
 
 displayPaintings();
 
