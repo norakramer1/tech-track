@@ -1,6 +1,8 @@
 import getData from "./getData.js"
-// import {fetchObjectIds } from "./getData.js"
+
+ import * as fetchPaintings from "./getData.js";
 import { renderData } from "./render.js"
+
 
 let data = await getData.getObjectIds();
 
@@ -16,17 +18,14 @@ console.log(data);
   
 //     })
 // });
- 
 
 
 
 export const displayPaintings = async () => {
-    // for (const id of paintingsID) {
-    //     const data = await getData.fetchPaintings(id)
-      console.log(data)
-    //     renderData(data)
-    // }
-    // renderData(data)
+    for (const id of data) {
+        const aah = await getData.fetchPaintings(id)
+        renderData(aah)
+    }
 }
 
 
