@@ -2,3 +2,7 @@ body {
   background: white;
   font-family: sans-serif;
 }
+
+section ul li img {
+  max-width: 40%;
+}
