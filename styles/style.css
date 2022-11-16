@@ -3,6 +3,10 @@ body {
   font-family: sans-serif;
 }
 
+section ul li {
+  list-style-type: none;
+}
+
 section ul li img {
   max-width: 40%;
 }

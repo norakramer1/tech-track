@@ -6,12 +6,12 @@ let API = 'https://collectionapi.metmuseum.org/public/collection/v1/objects/';
 async function fetchPaintings(painting) {  
     const dataFetch = await fetch(`${API}/${painting}`)
     const jsonData = await dataFetch.json()
-    console.log(jsonData)
+    // console.log(jsonData)
     return jsonData
     }
 
 
- let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=sunflowers';
+ let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=slay';
 // search?isHighlight=true&q=sunflowers
 
 

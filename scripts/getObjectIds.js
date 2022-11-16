@@ -6,7 +6,7 @@ import { renderData } from "./render.js"
 
 let data = await getData.getObjectIds();
 
-console.log(data);
+// console.log(data);
 
 
 // let apiCat = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=sunflowers';
