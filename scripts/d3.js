@@ -4,13 +4,11 @@ import getData from "./getData.js"
 
 
 
-let dataSet = await getData.getObjectIds();
-
-console.log(dataSet);
 
 
 
-
+export function renderD3(graph) {
+let dataSet = graph;
 
   // Een lineare schaal die de oppervlakte van de circel bepaalt
 const sqrtScale = d3
@@ -71,3 +69,5 @@ d3.select("body").on("touchend", e => d3.select("#tooltip").style("opacity", 0))
 const axisBottom = d3.axisBottom(pointScale).tickFormat((s) => s.slice(0, 2));
 
 d3.select("#axis1").call(axisBottom);
+
+}

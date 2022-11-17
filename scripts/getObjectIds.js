@@ -2,6 +2,7 @@ import getData from "./getData.js"
 
  import * as fetchPaintings from "./getData.js";
 import { renderData } from "./render.js"
+import { renderD3 } from "./d3.js"
 
 
 let data = await getData.getObjectIds();
@@ -24,8 +25,9 @@ let data = await getData.getObjectIds();
 export const displayPaintings = async () => {
     for (const id of data) {
         const aah = await getData.fetchPaintings(id)
-        renderData(aah)
+
+        //console.log(aah)
+          renderData(aah)
     }
 }
-
 
