@@ -8,7 +8,7 @@ async function fetchPaintings(painting) {
     }
 
 
- let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&artistBeginDate=true&q=ghosts';
+ let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?searchField=All&hasImages=true&q=green';
 // search?isHighlight=true&q=sunflowers
 
 
@@ -17,7 +17,7 @@ async function getObjectIds() {
     let res = await fetch(search);
     let data = await res.json();
 
-    return data.objectIDs.splice(data.objectIDs.length-25);
+    return data.objectIDs.splice(data.objectIDs.length-45);
   
 }
 

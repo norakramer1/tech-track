@@ -1,9 +1,8 @@
 
 
-import { renderD3 } from "./d3.js"
+// import { renderD3 } from "./d3.js"
 
 export function renderData(detailed) {
-    renderD3(detailed)
     const list = document.querySelector('section ul');
     list.insertAdjacentHTML('beforeend',
     `<li>

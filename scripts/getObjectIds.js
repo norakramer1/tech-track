@@ -2,7 +2,8 @@ import getData from "./getData.js"
 
  import * as fetchPaintings from "./getData.js";
 import { renderData } from "./render.js"
-import { renderD3 } from "./d3.js"
+import { renderD3 } from "./d3.js";
+// import { renderD3 } from "./d3.js"
 
 
 let data = await getData.getObjectIds();
@@ -23,11 +24,28 @@ let data = await getData.getObjectIds();
 
 
 export const displayPaintings = async () => {
-    for (const id of data) {
-        const aah = await getData.fetchPaintings(id)
 
-        //console.log(aah)
-          renderData(aah)
-    }
+    const items = await Promise.all(data.map(id => {
+        return getData.fetchPaintings(id);
+    }))
+
+    let filteredItems = items.filter(item => !item.message)
+    console.log(filteredItems);    
+    
+renderD3(filteredItems);
+
+    
+    // for (const id of data) {
+    //     const aahaah.map(id => {
+    //         return await getData.fetchPaintings(id)
+
+    //     });
+
+    //     //console.log(aah)
+    //       renderData(aah)
+    //       console.log(aah)
+    //     //   console.log(typeof aah)
+    
+    // }
 }
 
