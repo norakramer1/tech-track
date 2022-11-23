@@ -8,9 +8,22 @@ async function fetchPaintings(painting) {
     }
 
 
- let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?searchField=All&hasImages=true&q=green';
+ let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?&title=true&hasImages=true&q=day';
+// let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?searchField=All&showOnly=openAccess&sortBy=relevance&pageSize=0&title=cat'
 // search?isHighlight=true&q=sunflowers
 
+
+// console.log('testing fetches');
+
+// let requests = [];
+
+// for(let i = 0; i < 5; i++) {
+//     requests.push(fetch(search).then(data => data.json()))
+// }
+
+// Promise.all(requests).then(data => {
+//     console.log(data);
+// })
 
 async function getObjectIds() {
 
