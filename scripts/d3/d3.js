@@ -111,7 +111,9 @@ export function renderD3(data) {
     .on("click", (e, d) =>
     d3
     .select(".panel")
-    .text(`Artist: ${d.artistDisplayName}, title: ${d.title}`)
+    .text(`
+    Additional information about the painting
+    Artist: ${d.artistDisplayName}, title: ${d.title}`)
     .transition()
     .duration(175)
     .style("opacity", 1)
@@ -126,28 +128,8 @@ export function renderD3(data) {
       .style("top", e.pageY + 15 + "px")
   )
 
-  .on("mouseout", e => d3.select(".panel").style("opacity", 0)
-  )
-
-
-    // .on("mousemove", (e) =>
-    //   d3
-    //   .select("#tooltip")
-    //   .style("left", e.pageX + 15 + "px")
-    //   .style("top", e.pageY + 15 + "px"),
-    
-
-
-    //   // .on("click", () =>
-    //   // d3
-    //   // //  <img src="${d.primaryImageSmall}">
-    //   // .select(".panel")
-    //   // .transition()
-    //   // .duration(175)
-    //   // .style("opacity", 0)
-
-    // )
-
+  // .on("mouseout", e => d3.select(".panel").style("opacity", 0)
+  // )
     
 
     // .on("click", e => d3.select("#panel").style("opacity", 0))
