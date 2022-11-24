@@ -48,8 +48,8 @@ export function renderD3(data) {
    var x = d3.scaleLinear()
     .domain([1300, 2020])
     .range([0, width]);
-  
-  var xAxis = svg.append("g")
+    // var xAxis =
+  svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
 
@@ -57,8 +57,8 @@ export function renderD3(data) {
   //  .domain(['European Paintings'])
     .domain(d3.map(data, (d) => d.department))
     .range([height, 0])
-  
-    var yAxis = svg.append("g")
+  //   var yAxis =
+  svg.append("g")
     .call(d3.axisLeft(y));
 
   
@@ -107,24 +107,27 @@ export function renderD3(data) {
     .style("fill", "#68b2a1")
     .attr("width", 100)
     .attr("height", 100)
+   // .join("dot")
+    .on("click", (e, d) =>
+    d3
+    .select(".panel")
+    .text(`Artist: ${d.artistDisplayName}, title: ${d.title}`)
+    .transition()
+    .duration(175)
+    .style("opacity", 1)
+    // .attr("r", (d) => scalePoint(d.department))
+    // .attr("cx", (d) => scaleLinear(d.artistEndDate))
 
-    .on("click", (d) =>
-      d3
-      //  <img src="${d.primaryImageSmall}">
-      .select(".panel")
-      .text(  
-   `
-        ${d.objectName}
-        ${d.title}
-        ${d.artistEndDate}`
     )
-      .transition()
-      .duration(175)
-      .style("opacity", 1)
+    .on("mousemove", (e) =>
+    d3
+      .select("#tooltip")
+      .style("left", e.pageX + 15 + "px")
+      .style("top", e.pageY + 15 + "px")
+  )
 
-      // .on("mouseout", e => d3.selectAll("dot").style("opacity", 0)
-      // )
-    )
+  .on("mouseout", e => d3.select(".panel").style("opacity", 0)
+  )
 
 
     // .on("mousemove", (e) =>
