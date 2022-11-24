@@ -8,7 +8,7 @@ async function fetchPaintings(painting) {
     }
 
 
- let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?&title=true&hasImages=true&q=day';
+ let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?&isHighlight=true&hasImages=true&q=&departmentId=11';
 // let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?searchField=All&showOnly=openAccess&sortBy=relevance&pageSize=0&title=cat'
 // search?isHighlight=true&q=sunflowers
 

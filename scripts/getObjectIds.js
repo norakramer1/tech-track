@@ -2,7 +2,7 @@ import getData from "./getData.js"
 
  import * as fetchPaintings from "./getData.js";
 import { renderData } from "./render.js"
-import { renderD3 } from "./d3.js";
+import { renderD3 } from "./d3/d3.js";
 // import { renderD3 } from "./d3.js"
 
 
