@@ -9,11 +9,11 @@ import {
 const startRender = document.querySelector('a.start')
 
 // console.log(startRender)
-startRender.addEventListener('click', (e) => {
-    e.preventDefault();
-    displayPaintings();
-})
-
+// startRender.addEventListener('click', (e) => {
+//     e.preventDefault();
+   
+// })
+displayPaintings();
 
 
 const x = document.querySelector('button.delete')
