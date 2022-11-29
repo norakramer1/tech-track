@@ -20,18 +20,18 @@ console.log(x)
 if (x) {
    
 
-
-    console.log(x)
+  
+  
     const panel = document.querySelector('div.panel')
     // console.log(panel)
     x.addEventListener('click', () => {
-
-        panel.classList.toggle('open')
+        // console.log(panel)
+        // panel.classList.toggle('open')
         // x.classList.toggle('open')
         // e.preventDefault();
+        panel.style = "opacity: 0"
+     
+
     })
 
 }
-
-
-

@@ -163,7 +163,6 @@ export function renderD3(data) {
       d3
       .select(".panel")
     .html(   `<li>
-    <button class='delete'>x</button>
     <img src="${d.primaryImageSmall}">
 
     <h3>${d.title}</h3>
@@ -178,7 +177,7 @@ export function renderD3(data) {
  </li>`)
       .transition()
       .duration(175)
-      .style("opacity", 1)
+     .style("opacity", 1)
 
  
      )
