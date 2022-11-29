@@ -4,18 +4,18 @@ import {
   scaleLinear,
   scalePoint
 } from 'd3';
+// import { openPanel } from '../main';
 import {
   renderData
 } from '../render';
-
+// import { openPanel } from '../main.js'
 
 var margin = {
   top: 10,
-  right: 10,
-  bottom: 30,
-  left: 100
+  right: 40,
+  bottom: 50,
+  left: 80
 }
-
 
 
 let clientWidth = window.innerWidth;
@@ -47,6 +47,14 @@ var svg = d3.select("#my_dataviz")
   svg.append("path")
   .attr("height", height)
     .attr("class", "line")
+
+    .on("click", (e, d) =>
+    d3
+    .select(".panel")
+    .style("opacity", 0)
+
+
+   )
   
 
 
@@ -75,7 +83,7 @@ export function renderD3(data) {
     .call(xAxis);
 
   const zoom = d3.zoom()
-    .scaleExtent([.5, 20])
+    .scaleExtent([.5, 80])
     // This control how much you can unzoom (x0.5) and zoom (x20)
     .extent([
       [0, 0],
@@ -84,15 +92,25 @@ export function renderD3(data) {
     .on("zoom", function (event) {
 
       x2 = event.transform.rescaleX(x);
-      xAxisG.call(xAxis.scale(x2));
-      let myTransform = event.transform;
+      // xAxisG.call(xAxis.scale(x2));
+      xAxisG.call(d3.axisBottom(x2));
+       let myTransform = event.transform;
+      // svg.selectAll("image#painting")
+        
 
       // myTransform.y = 0;
 
       // imageTransform = ;
       d3.selectAll('#painting')
+      .attr('x', function (d) {
+        return x2(d.objectEndDate);
+      })
       
-        .attr("transform", "translate(" + myTransform.x + "," +0 + ") scale(" + 1 + ")");
+      // .attr("x", function (d) {
+      //   return scale(d);
+      // })
+      // .attr("x", function(d){return scale(d);})
+        // .attr("transform", "translate(" + myTransform.x + "," + 0 + ") scale(" + 1 + ")");
       // .attr("transform", myTransform)
       //  .style("transform-origin", "top");
 
@@ -103,14 +121,14 @@ export function renderD3(data) {
 
   var y = d3.scalePoint()
     //  .domain(['European Paintings'])
-    .domain(d3.map(data, (d) => d.department))
+    // .domain(d3.map(data, (d) => d.department))
     .range([0, height])
  
 
   //   var yAxis =
-  svg.append("g")
+  // svg.append("g")
  
-    .call(d3.axisLeft(y));
+   .call(d3.axisLeft(y));
 
 
 
@@ -130,26 +148,40 @@ export function renderD3(data) {
       return x(d.objectEndDate);
     })
 
-    .attr("y", function (d) {
-      return y(d.department);
-    })
+    // .attr("y", function (d) {
+    //   return y(d.department);
+    // })
+    
   
     .attr("width", 150)
     .attr("height", 150)
     
     // .join("dot")
-
+    // .on("click", () => openPanel())
 
     .on("click", (e, d) =>
       d3
       .select(".panel")
-      .text(`
-    Additional information about the painting
-    Artist: ${d.artistDisplayName}, title: ${d.title}`)
+    .html(   `<li>
+    <button class='delete'>x</button>
+    <img src="${d.primaryImageSmall}">
+
+    <h3>${d.title}</h3>
+    <h3> ${d.objectEndDate}</h3>
+
+    <h2>About the Artist</h2>
+    <h3>Name: ${d.artistDisplayName}</h3>
+    <h3>About: ${d.artistDisplayBio}</h3>
+
+    <p>Credit: ${d.creditLine}</p>
+
+ </li>`)
       .transition()
       .duration(175)
       .style("opacity", 1)
-    )
+
+ 
+     )
     .on("mousemove", (e) =>
       d3
       .select("#tooltip")
@@ -160,9 +192,13 @@ export function renderD3(data) {
   // .call(zoom);
 
 
-
+  function update_events(){
+    return svg.selectAll("image#painting")
+        .attr("x", function(d){return scale(d);})    
+}
 
 
   // svg.call(zoom);
   d3.select('svg').call(zoom);
 }
+

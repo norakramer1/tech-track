@@ -30,7 +30,7 @@ async function getObjectIds() {
     let res = await fetch(search);
     let data = await res.json();
 
-    return data.objectIDs.splice(data.objectIDs.length-15);
+    return data.objectIDs.splice(data.objectIDs.length-45);
 //   
 }
 

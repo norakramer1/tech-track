@@ -15,20 +15,23 @@ const startRender = document.querySelector('a.start')
 // })
 displayPaintings();
 
-
 const x = document.querySelector('button.delete')
-
-
-
-const panel = document.querySelector('div.panel')
+console.log(x)
 if (x) {
-    // console.log(x)
+   
+
+
+    console.log(x)
+    const panel = document.querySelector('div.panel')
     // console.log(panel)
     x.addEventListener('click', () => {
 
-        panel.style = 'opacity: 0'
-        x.classList.toggle('toggle')
+        panel.classList.toggle('open')
+        // x.classList.toggle('open')
         // e.preventDefault();
     })
 
 }
+
+
+
