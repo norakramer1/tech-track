@@ -125,10 +125,26 @@ section ul li img {
 }
 
 
-button {
+button{
   z-index: 3;
 color: $bg-color;
+
 }
+
+button.delete {
+  cursor: pointer;
+  background-color:$bg-color;
+
+  img {
+    z-index: 3;
+    position: absolute;
+    right: 10%;
+    height: 50px;
+    width: 50px;
+  }
+}
+
+
 
 g.tick, path.domain {
   font-family: Georgia, 'Times New Roman', Times, serif;

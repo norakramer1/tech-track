@@ -153,8 +153,8 @@ export function renderD3(data) {
     // })
     
   
-    .attr("width", 150)
-    .attr("height", 150)
+    .attr("width", 200)
+    .attr("height", 200)
     
     // .join("dot")
     // .on("click", () => openPanel())
