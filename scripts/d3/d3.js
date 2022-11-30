@@ -24,7 +24,7 @@ let clientWidth = window.innerWidth;
 
 
 const width = clientWidth - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
+const height = 400 - margin.top - margin.bottom;
 
 
 var svg = d3.select("#my_dataviz")
@@ -165,21 +165,25 @@ export function renderD3(data) {
     .html(   `<li>
     <img src="${d.primaryImageSmall}">
 
-    <h3>${d.title}</h3>
-    <h3> ${d.objectEndDate}</h3>
+    <h2>${d.title}</h2>
+     <h3><span>Artist:</span> ${d.artistDisplayName}</h3>
+    <h3><span>About:</span> ${d.artistDisplayBio}</h3>
 
-    <h2>About the Artist</h2>
-    <h3>Name: ${d.artistDisplayName}</h3>
-    <h3>About: ${d.artistDisplayBio}</h3>
 
-    <p>Credit: ${d.creditLine}</p>
 
  </li>`)
       .transition()
       .duration(175)
      .style("opacity", 1)
 
- 
+     .select(".delete")
+     .style("opacity", 1)
+
+    //  <h3> ${d.objectEndDate}</h3>
+
+    //  <h2>About the Artist</h2>
+    //  <h3>Name: ${d.artistDisplayName}</h3>
+    //     <p>Credit: ${d.creditLine}</p>
      )
     .on("mousemove", (e) =>
       d3
@@ -191,10 +195,10 @@ export function renderD3(data) {
   // .call(zoom);
 
 
-  function update_events(){
-    return svg.selectAll("image#painting")
-        .attr("x", function(d){return scale(d);})    
-}
+//   function update_events(){
+//     return svg.selectAll("image#painting")
+//         .attr("x", function(d){return scale(d);})    
+// }
 
 
   // svg.call(zoom);
