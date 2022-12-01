@@ -1,5 +1,8 @@
 # MET museum highlights
 
+<img width="1233" alt="Screenshot 2022-12-01 at 18 26 26" src="https://user-images.githubusercontent.com/74241562/205119835-a2d862dc-d845-48c0-90a5-6d3a01e1d65b.png">
+
+
 ## Table of contents
 - [What is the app](#what-is-it)
 - [Interface](#picture-of-interface)
