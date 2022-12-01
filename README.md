@@ -17,7 +17,7 @@ This WebApp is made with HTML, CSS, Javascript and d3.js.
 
 
 ## Picture of interface 
-![MET highlights](https://github.com/norakramer1/web-app-from-scratch-2122/blob/main/spa/images/interface.png?raw=true)
+<img width="1253" alt="Screenshot 2022-12-01 at 18 25 35" src="https://user-images.githubusercontent.com/74241562/205119657-9b640e22-40ce-4d3d-a7f4-fd35833a6be9.png">
 
 ## Metropolitan Museum Of Art Open Access API
 
