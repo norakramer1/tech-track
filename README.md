@@ -36,6 +36,7 @@ You can use this project to make something of your own.
 
 1. Clone this repo
 2. Run with `npm run dev` in your terminal
+3. Use `npm run build` to build the app and make a dist folder for deployment
 4. Open in your browser and watch the data roll in
 
 ## Features
