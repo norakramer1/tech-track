@@ -1,10 +1,11 @@
 import getData from "./getData.js"
+import { renderD3 } from "./d3/d3.js";
 
 // await getObjectIds response 
 // Map over items when promise is resolved and for each results fetch data (name, image, discription)
 
 export const displayPaintings = async () => {
-    // Await needs to be in an async function if it wants to be deployable
+    // Await needs to be in an async function if it wants to
     let data = await getData.getObjectIds();
 
     const items = await Promise.all(data.map(id => {
@@ -18,6 +19,5 @@ export const displayPaintings = async () => {
 renderD3(filteredItems);
 
 }
-
 
 
