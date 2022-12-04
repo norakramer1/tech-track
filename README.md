@@ -97,11 +97,11 @@ renderD3(filteredItems);
 
 }
 
-```javascript
+```
 3. d3.js timeline zoom
 This shows how you I made the timeline using d3.js and how the images move with the year. It first creates a new x axis that is used to zoom. It sets some settings for zoom extent etc. Then on zoom eventlistener it rescales the x axis and call the g tag that has the x axis in it. It also selects everything that has an ID of `#painting` and updates the `x attribute` with a parameter that is a function that uses the new x axis and the date the object was made. Then enters the images.
 
-```
+```javascript
  // Zoom functionality
   let x2 = x;
   const xAxis = d3.axisBottom(x2);
