@@ -58,7 +58,7 @@ This project is made using HTML, CSS, Javascript and d3.js. On entering all the 
 This function fetches the in depth data for every object ID you accuire in the first fetch. It runs async because it has to fetch for every objectID the previous fetch returns. After that it splices the objectIds into 50 so you don't request too many objects at once. Lastly the export is used to make both of the functions usable.
 
 
-```
+```javascript
    let search = 'https://collectionapi.metmuseum.org/public/collection/v1/search?&isHighlight=true&hasImages=true&q=painting&departmentId=11';
 
 async function getObjectIds() {
