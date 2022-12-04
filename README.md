@@ -80,7 +80,7 @@ export default {
 2. Get objects
 This async function uses both of the functions we just made to request the objects that have all the data inside. It also filters out all responses that just display a message (that usually says the item was not found).
 
-```
+```javascript
 export const displayPaintings = async () => {
     // Await needs to be in an async function if it wants to
     let data = await getData.getObjectIds();
@@ -97,7 +97,7 @@ renderD3(filteredItems);
 
 }
 
-```
+```javascript
 3. d3.js timeline zoom
 This shows how you I made the timeline using d3.js and how the images move with the year. It first creates a new x axis that is used to zoom. It sets some settings for zoom extent etc. Then on zoom eventlistener it rescales the x axis and call the g tag that has the x axis in it. It also selects everything that has an ID of `#painting` and updates the `x attribute` with a parameter that is a function that uses the new x axis and the date the object was made. Then enters the images.
 
