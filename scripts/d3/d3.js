@@ -35,7 +35,7 @@ svg
 // Read the data
 export function renderD3(data) {
   // Add X axis
-  var x = d3.scaleLinear().domain([1400, 2020]).range([0, width]);
+  var x = d3.scaleLinear().domain([1400, 2000]).range([0, width]);
   // Move axis to bottom of graph
   svg
     .append("g")
@@ -55,16 +55,25 @@ export function renderD3(data) {
       [width, height],
     ])
     .on("zoom", function (event) {
-      // on zoom rescale x axis and update x position of all paintings
+      // on zoom rescale x axis and update x position of all paintings and lines
       x2 = event.transform.rescaleX(x);
       xAxisG.call(d3.axisBottom(x2));
 
       d3.selectAll("#painting").attr("x", function (d) {
         return x2(d.objectEndDate);
       });
+
+      d3.selectAll(".painting-line")
+        .attr("stroke", "white")
+        .attr("x1", function (d) {
+          return x2(d.objectEndDate) + 100; // Adjust for the painting's center
+        })
+        .attr("x2", function (d) {
+          return x2(d.objectEndDate) + 100; // Match the x-coordinate
+        });
     });
 
-  // enter images in graph
+  // Add paintings to the graph
   svg
     .append("g")
     .attr("id", "paintings")
@@ -80,35 +89,50 @@ export function renderD3(data) {
     .attr("x", function (d) {
       return x(d.objectEndDate);
     })
-
-    .attr("width", 200)
+    // .attr("y", height - 200) // Position paintings near the bottom of the canvas
+    //.attr("width", 200)
     .attr("height", 200)
-
     .on("click", (e, d) =>
       d3
         .select(".panel")
-
         .attr("id", "open")
-        //  render dynamic html in panel on click
         .html(
           `<li>
-      <img src="${d.primaryImageSmall}">
-       <div>
-         <h2>${d.title}</h2>
-         <h3> ${d.objectEndDate}</h3>
-         <h3><span>Made by:</span> ${d.artistDisplayName}</h3>
-         <h3><span>About the artist:</span> ${d.artistDisplayBio}</h3>
-         <h3><span>Credit:</span> ${d.creditLine}</h3>
-      </div>
-    </li>`
+          <img src="${d.primaryImageSmall}">
+          <div>
+            <h2>${d.title}</h2>
+            <h3> ${d.objectEndDate}</h3>
+            <h3><span>Made by:</span> ${d.artistDisplayName}</h3>
+            <h3><span>About the artist:</span> ${d.artistDisplayBio}</h3>
+            <h3><span>Credit:</span> ${d.creditLine}</h3>
+          </div>
+          </li>`
         )
-
         .transition()
         .duration(175)
     )
-    // remove ID with opacity settings on mouseout
     .on("mouseout", (e) => d3.select(".panel").attr("id", ""));
 
-  // call zoom function
+  // Add lines connecting paintings to the timeline
+  svg
+    .append("g")
+    .attr("id", "lines")
+    .selectAll("line")
+    .data(data)
+    .enter()
+    .append("line")
+    .attr("class", "painting-line")
+    .attr("x1", function (d) {
+      return x(d.objectEndDate) + 100; // Center line on painting
+    })
+    .attr("x2", function (d) {
+      return x(d.objectEndDate) + 100; // Match the x-coordinate
+    })
+    .attr("y1", height - 140) // Start at the bottom of the painting
+    .attr("y2", height) // End at the timeline
+    .attr("stroke", "#9499b0")
+    .attr("stroke-width", 1);
+
+  // Call zoom function
   d3.select("svg").call(zoom);
 }

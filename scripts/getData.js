@@ -7,7 +7,6 @@ async function fetchPaintings(paintingId) {
   const cachedPainting = localStorage.getItem(localStorageKey);
 
   if (cachedPainting) {
-    console.log(`Using cached painting data for ID: ${paintingId}`);
     return JSON.parse(cachedPainting);
   }
 
