@@ -120,7 +120,7 @@ export function renderD3(data) {
     .append("line")
     .attr("class", "painting-line")
     .attr("y1", height - 140) // Start at the bottom of the painting
-    .attr("y2", height) // End at the timeline
+    .attr("y2", height - 140) // End at the timeline
     .attr("stroke", "#9499b0")
     .attr("stroke-width", 1)
     .attr("x1", function (d, i) {
@@ -134,6 +134,13 @@ export function renderD3(data) {
       const paintingWidth = painting.getBBox().width;
       const paintingX = x(d.objectEndDate);
       return paintingX + paintingWidth / 2;
+    })
+    .attr("y2", function (d, i) {
+      const painting = d3.selectAll("#painting").nodes()[i];
+      const paintingHeight = painting.getBBox().height;
+      console.log(paintingHeight);
+      const paintingY = x(d.objectEndDate);
+      return paintingY + paintingHeight;
     });
 
   // Call zoom function
