@@ -19,7 +19,6 @@ let svg = d3
   .append("svg")
   .attr("width", width)
   .attr("height", height + margin.top + margin.bottom)
-
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -91,26 +90,91 @@ export function renderD3(data) {
       // Set initial width to prevent layout shift
       d3.select(this).attr("width", 200);
     })
-    .on("click", (e, d) =>
-      d3
-        .select(".panel")
-        .attr("id", "open")
+    .on("click", function (e, d) {
+      const painting = d3.select(this);
+
+      // Transition to zoom the image to 125%
+      painting
+        .transition()
+        .duration(300)
+        .attr("width", 250) // 25% bigger
+        .attr("height", 250);
+
+      // Add the line
+      const line = svg
+        .append("line")
+        .attr("class", "painting-line")
+        .attr("x1", x(d.objectEndDate) + 100) // Center of the painting
+        .attr("y1", height - 340) // Bottom of the painting
+        .attr("x2", x(d.objectEndDate) + 100) // Center of the painting
+        .attr("y2", height) // Bottom of the timeline
+        .attr("stroke", "#9499b0")
+        .attr("stroke-width", 1);
+
+      // Add the panel and button
+      const panel = d3
+        .select("body")
+        .append("div")
+        .attr("class", "panel")
+        .style("position", "absolute")
+        .style("bottom", "0")
+        .style("left", `${x(d.objectEndDate) + 100}px`) // Align to the image's center
+        .style("width", "50%")
+        .style("height", "100%")
+        .style("background", "#fff")
+        .style("padding", "20px")
+        .style("z-index", 1000)
         .html(
-          `<li>
-          <img src="${d.primaryImageSmall}">
-          <div>
-            <h2>${d.title}</h2>
-            <h3>${d.objectEndDate}</h3>
-            <h3><span>Made by:</span> ${d.artistDisplayName}</h3>
-            <h3><span>About the artist:</span> ${d.artistDisplayBio}</h3>
-            <h3><span>Credit:</span> ${d.creditLine}</h3>
-          </div>
-        </li>`
+          `<h3>${d.title}</h3>
+           <p><strong>Artist:</strong> ${d.artistDisplayName}</p>
+           <p><strong>Year:</strong> ${d.objectEndDate}</p>
+           <p><strong>About:</strong> ${d.artistDisplayBio}</p>
+           <p><strong>Credit:</strong> ${d.creditLine}</p>
+           <button id="close-panel" style="position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 10px;">Close</button>`
         )
         .transition()
-        .duration(175)
-    )
-    .on("mouseout", (e) => d3.select(".panel").attr("id", ""));
+        .duration(300)
+        .style("opacity", 1);
+
+      // Handle close button click to remove the line and panel with smooth transition
+      d3.select("#close-panel").on("click", function (e) {
+        e.stopPropagation(); // Prevent the event from propagating to body click handler
+
+        // Ensure elements are selected before applying transitions
+        const lineToRemove = svg.select(".painting-line");
+        const panelToRemove = d3.select(".panel");
+
+        // Transition the line and panel out
+        lineToRemove.transition().duration(300).style("opacity", 0).remove();
+        panelToRemove.transition().duration(300).style("opacity", 0).remove();
+
+        // Reset the painting size with transition
+        painting
+          .transition()
+          .duration(300)
+          .attr("width", 200)
+          .attr("height", 200);
+      });
+
+      // Handle body click (outside painting or panel) to remove the line and panel
+      d3.select("body").on("click", function (event) {
+        if (
+          !painting.node().contains(event.target) &&
+          !panel.node().contains(event.target)
+        ) {
+          // Transition and remove the line and panel
+          line.transition().duration(300).style("opacity", 0).remove();
+          panel.transition().duration(300).style("opacity", 0).remove();
+
+          // Reset painting size
+          painting
+            .transition()
+            .duration(300)
+            .attr("width", 200)
+            .attr("height", 200);
+        }
+      });
+    });
 
   // Add lines connecting paintings to the timeline
   svg
@@ -136,13 +200,6 @@ export function renderD3(data) {
       const paintingWidth = painting.getBBox().width;
       const paintingX = x(d.objectEndDate);
       return paintingX + paintingWidth / 2;
-    })
-    .attr("y1", function (d, i) {
-      const painting = d3.selectAll("#painting").nodes()[i];
-      const paintingHeight = painting.getBBox().height;
-      console.log(paintingHeight);
-      //const paintingY = x(d.objectEndDate);
-      return paintingHeight;
     });
 
   // Call zoom function
