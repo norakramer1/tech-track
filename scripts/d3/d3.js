@@ -72,7 +72,6 @@ export function renderD3(data) {
     });
 
   // Add paintings to the graph
-  // Add paintings to the graph
   svg
     .append("g")
     .attr("id", "paintings")
@@ -85,6 +84,9 @@ export function renderD3(data) {
     .attr("xlink:href", (d) => d.primaryImageSmall)
     .attr("x", (d) => x(d.objectEndDate))
     .attr("height", 200)
+    .attr("width", 200)
+    .attr("preserveAspectRatio", "xMidYMax meet") // Align to bottom-center
+    .attr("y", height - 340) // Baseline at the bottom (adjust y dynamically)
     .each(function () {
       // Set initial width to prevent layout shift
       d3.select(this).attr("width", 200);
@@ -119,8 +121,8 @@ export function renderD3(data) {
     .enter()
     .append("line")
     .attr("class", "painting-line")
-    .attr("y1", height - 140) // Start at the bottom of the painting
-    .attr("y2", height - 140) // End at the timeline
+    .attr("y1", 200) // Start at the bottom of the painting
+    .attr("y2", 340) // End at the timeline
     .attr("stroke", "#9499b0")
     .attr("stroke-width", 1)
     .attr("x1", function (d, i) {
@@ -135,12 +137,12 @@ export function renderD3(data) {
       const paintingX = x(d.objectEndDate);
       return paintingX + paintingWidth / 2;
     })
-    .attr("y2", function (d, i) {
+    .attr("y1", function (d, i) {
       const painting = d3.selectAll("#painting").nodes()[i];
       const paintingHeight = painting.getBBox().height;
       console.log(paintingHeight);
-      const paintingY = x(d.objectEndDate);
-      return paintingY + paintingHeight;
+      //const paintingY = x(d.objectEndDate);
+      return paintingHeight;
     });
 
   // Call zoom function
