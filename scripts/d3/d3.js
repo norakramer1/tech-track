@@ -86,7 +86,7 @@ export function renderD3(data) {
     .attr("width", 200)
     .attr("preserveAspectRatio", "xMidYMax meet") // Align to bottom-center
     .attr("y", height - 340) // Baseline at the bottom (adjust y dynamically)
-    .on("mouseover", function (e, d) {
+    .on("click", function (e, d) {
       const painting = d3.select(this);
 
       // Remove any existing panels
@@ -114,21 +114,13 @@ export function renderD3(data) {
         .style("opacity", 1);
 
       // Highlight the painting by increasing its size
-      painting
-        .transition()
-        .duration(300)
-        .attr("width", 250)
-        .attr("height", 250);
+      painting.attr("width", 250).attr("height", 250);
     })
     .on("mouseout", function () {
       const painting = d3.select(this);
 
       // Reset the painting size
-      painting
-        .transition()
-        .duration(300)
-        .attr("width", 200)
-        .attr("height", 200);
+      painting.attr("width", 200).attr("height", 200);
     });
 
   // Add lines connecting paintings to the timeline
@@ -149,7 +141,7 @@ export function renderD3(data) {
 
   // Close all panels when hovering over empty space
   svg.on("mousemove", function (event) {
-    const target = event.target; // Correctly use `event.target` for modern D3.js
+    const target = event.target;
 
     // Check if the hovered element is not a painting
     if (target.tagName !== "image") {
