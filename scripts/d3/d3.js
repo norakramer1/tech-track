@@ -38,7 +38,7 @@ export function renderD3(data) {
 
   // Add X axis with linear scale
   let x = d3.scaleLinear().domain(xDomain).range([0, width]);
-  const xAxis = d3.axisBottom(x).ticks(10).tickFormat(d3.format("d")); // Year ticks with integer format
+  const xAxis = d3.axisBottom(x).ticks(10).tickFormat(d3.format("d"));
 
   // Add axis to SVG
   const xAxisG = svg
@@ -49,7 +49,7 @@ export function renderD3(data) {
   // Add zoom functionality
   const zoom = d3
     .zoom()
-    .scaleExtent([1, 80]) // Zoom range: 1x to 80x zoom
+    .scaleExtent([1, 80])
     .extent([
       [0, 0],
       [width, height],
@@ -61,10 +61,8 @@ export function renderD3(data) {
       xAxis.scale(newScale);
       xAxisG.call(xAxis);
 
-      // Update positions of paintings
+      // Update positions of paintings and lines
       d3.selectAll("#painting").attr("x", (d) => newScale(d.objectEndDate));
-
-      // Update positions of lines
       d3.selectAll(".painting-line")
         .attr("x1", (d) => newScale(d.objectEndDate) + 100)
         .attr("x2", (d) => newScale(d.objectEndDate) + 100);
@@ -84,43 +82,61 @@ export function renderD3(data) {
     .attr("x", (d) => x(d.objectEndDate))
     .attr("height", 200)
     .attr("width", 200)
-    .attr("preserveAspectRatio", "xMidYMax meet") // Align to bottom-center
-    .attr("y", height - 340) // Baseline at the bottom (adjust y dynamically)
+    .attr("preserveAspectRatio", "xMidYMax meet")
+    .attr("y", height - 340)
     .on("click", function (e, d) {
       const painting = d3.select(this);
+      const centerX = width / 2 - 125; // Center position for the painting
+      const imageY = height - 340; // Fixed baseline position
 
-      // Remove any existing panels
+      // Remove existing panels
       d3.selectAll(".panel").remove();
 
-      // Add the panel
-      d3.select("body")
+      // Add the panel with a close button
+      const panel = d3
+        .select("body")
         .append("div")
         .attr("class", "panel")
         .style("position", "absolute")
-        .style("bottom", "0")
-        .style("left", `${x(d.objectEndDate) + 100}px`) // Align to the image's center
+        .style("top", `${imageY}px`) // Align with the painting
+        .style("left", `${centerX + 270}px`) // Next to the painting
         .style("width", "500px")
         .style("height", "200px")
         .style("background", "#fff")
         .style("padding", "20px")
         .style("z-index", 1000)
+        .style("opacity", 0)
         .html(
-          `<h3>${d.title}</h3>
+          `<button id="closePanel" style="position:absolute; top:5px; right:5px;">X</button>
+           <h3>${d.title}</h3>
            <p><strong>Artist:</strong> ${d.artistDisplayName}</p>
            <p><strong>Year:</strong> ${d.objectEndDate}</p>
            <p><strong>About:</strong> ${d.artistDisplayBio}</p>
            <p><strong>Credit:</strong> ${d.creditLine}</p>`
         )
+        .transition()
+        .duration(300)
         .style("opacity", 1);
 
-      // Highlight the painting by increasing its size
-      painting.attr("width", 250).attr("height", 250);
-    })
-    .on("mouseout", function () {
-      const painting = d3.select(this);
+      // Move painting smoothly to the center
+      painting
+        .transition()
+        .duration(300)
+        .attr("x", centerX)
+        .attr("y", imageY) // Ensure Y remains unchanged
+        .attr("width", 250)
+        .attr("height", 250);
 
-      // Reset the painting size
-      painting.attr("width", 200).attr("height", 200);
+      // Close panel functionality
+      setTimeout(() => {
+        d3.select("#closePanel").on("click", function () {
+          d3.select(".panel")
+            .transition()
+            .duration(300)
+            .style("opacity", 0)
+            .remove();
+        });
+      }, 100);
     });
 
   // Add lines connecting paintings to the timeline
@@ -132,26 +148,24 @@ export function renderD3(data) {
     .enter()
     .append("line")
     .attr("class", "painting-line")
-    .attr("y1", 200) // Start at the bottom of the painting
-    .attr("y2", 340) // End at the timeline
+    .attr("y1", 200)
+    .attr("y2", 340)
     .attr("stroke", "#9499b0")
     .attr("stroke-width", 1)
     .attr("x1", (d) => x(d.objectEndDate) + 100)
     .attr("x2", (d) => x(d.objectEndDate) + 100);
 
-  // Close all panels when hovering over empty space
+  // Close panels when clicking on empty space
   svg.on("mousemove", function (event) {
     const target = event.target;
-
-    // Check if the hovered element is not a painting
     if (target.tagName !== "image") {
       d3.selectAll(".panel").remove();
     }
   });
 
-  svg.on("mouseout", function () {
-    d3.selectAll(".panel").remove();
-  });
+  // svg.on("mouseout", function () {
+  //   d3.selectAll(".panel").remove();
+  // });
 
   // Call zoom function
   d3.select("svg").call(zoom);
