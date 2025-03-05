@@ -82,8 +82,10 @@ export function renderD3(data) {
     .attr("width", 200)
     .attr("preserveAspectRatio", "xMidYMax meet")
     .attr("y", height - 340)
+    .style("border-radius", "10px") // Rounded corners
     .on("click", function (e, d) {
       if (selectedPainting) {
+        // Reset the previously selected painting to its original size (200px)
         selectedPainting
           .transition()
           .duration(800)
@@ -93,14 +95,23 @@ export function renderD3(data) {
       }
       selectedPainting = d3.select(this);
       const paintingX = x(d.objectEndDate);
-      const centerX = width / 2 - 100;
+      const centerX = width / 2 - 300;
+
+      // Calculate a percentage scale factor for the image (e.g., 1.5 means 150% of the original size)
+      const scaleFactor = 1.5; // Set desired scaling factor here, e.g., 1.5 for 150%
+
+      // Apply the scaling to the image size
+      const newWidth = 200 * scaleFactor; // 200px is the initial width
+      const newHeight = 200 * scaleFactor; // 200px is the initial height
+
       d3.selectAll(".panel").remove();
+
       selectedPainting
         .transition()
         .duration(800)
         .attr("x", centerX)
-        .attr("width", 250)
-        .attr("height", 250);
+        .attr("width", newWidth)
+        .attr("height", newHeight);
 
       // Add the info panel
       const panel = d3
@@ -109,23 +120,29 @@ export function renderD3(data) {
         .attr("class", "panel")
         .style("position", "absolute")
         .style("top", "50%")
-        .style("left", `${centerX + 300}px`)
+        .style("left", `${centerX + 400}px`)
         .style("transform", "translateY(-50%)")
-        .style("width", "400px")
-        .style("height", "300px")
-        .style("background", "#fff")
+        .style("max-width", "400px")
+        .style("max-height", "500px")
+        .style("background", "#1e1f24") // Dark background to match the app
+        .style("color", "#c5c6d0") // Light text color for contrast
         .style("padding", "20px")
         .style("z-index", 1000)
-        .style("box-shadow", "0px 4px 6px rgba(0,0,0,0.1)")
-        .style("border-radius", "8px")
+        .style("box-shadow", "0px 4px 6px rgba(0,0,0,0.2)") // Subtle shadow for the panel
+        .style("border", "1px solid #c5c6d0") // Rounded corners to match the UI style
         .style("opacity", 0)
+        .style("transition", "opacity 0.3s ease-in-out")
         .html(
-          `<button id="closePanel" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer;">X</button>
+          `<button id="closePanel" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer; color: #f4b942;">X</button>
            <h3>${d.title}</h3>
-           <p><strong>Artist:</strong> ${d.artistDisplayName}</p>
-           <p><strong>Year:</strong> ${d.objectEndDate}</p>
-           <p><strong>About:</strong> ${d.artistDisplayBio}</p>
-           <p><strong>Credit:</strong> ${d.creditLine}</p>`
+            <h4 class="info-title">Artist</h4>
+              <p class="info-text">${d.artistDisplayName}</p>
+            <h4 class="info-title">Year</h4>
+              <p class="info-text">${d.objectEndDate}</p>
+            <h4 class="info-title">About</h4>
+              <p class="info-text">${d.artistDisplayBio}</p>
+            <h4 class="info-title">Credit</h4>
+              <p class="info-text">${d.creditLine}</p>`
         )
         .transition()
         .duration(300)
