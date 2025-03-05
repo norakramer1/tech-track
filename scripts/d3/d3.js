@@ -56,17 +56,15 @@ export function renderD3(data) {
     ])
     .on("zoom", function (event) {
       const newScale = event.transform.rescaleX(x);
-
-      // Update the X axis dynamically
       xAxis.scale(newScale);
       xAxisG.call(xAxis);
-
-      // Update positions of paintings and lines
       d3.selectAll("#painting").attr("x", (d) => newScale(d.objectEndDate));
       d3.selectAll(".painting-line")
         .attr("x1", (d) => newScale(d.objectEndDate) + 100)
         .attr("x2", (d) => newScale(d.objectEndDate) + 100);
     });
+
+  let selectedPainting = null;
 
   // Add paintings to the graph
   svg
@@ -85,29 +83,44 @@ export function renderD3(data) {
     .attr("preserveAspectRatio", "xMidYMax meet")
     .attr("y", height - 340)
     .on("click", function (e, d) {
-      const painting = d3.select(this);
-      const centerX = width / 2 - 125; // Center position for the painting
-      const imageY = height - 340; // Fixed baseline position
-
-      // Remove existing panels
+      if (selectedPainting) {
+        selectedPainting
+          .transition()
+          .duration(800)
+          .attr("x", x(selectedPainting.datum().objectEndDate))
+          .attr("width", 200)
+          .attr("height", 200);
+      }
+      selectedPainting = d3.select(this);
+      const paintingX = x(d.objectEndDate);
+      const centerX = width / 2 - 100;
       d3.selectAll(".panel").remove();
+      selectedPainting
+        .transition()
+        .duration(800)
+        .attr("x", centerX)
+        .attr("width", 250)
+        .attr("height", 250);
 
-      // Add the panel with a close button
+      // Add the info panel
       const panel = d3
         .select("body")
         .append("div")
         .attr("class", "panel")
         .style("position", "absolute")
-        .style("top", `${imageY}px`) // Align with the painting
-        .style("left", `${centerX + 270}px`) // Next to the painting
-        .style("width", "500px")
-        .style("height", "200px")
+        .style("top", "50%")
+        .style("left", `${centerX + 300}px`)
+        .style("transform", "translateY(-50%)")
+        .style("width", "400px")
+        .style("height", "300px")
         .style("background", "#fff")
         .style("padding", "20px")
         .style("z-index", 1000)
+        .style("box-shadow", "0px 4px 6px rgba(0,0,0,0.1)")
+        .style("border-radius", "8px")
         .style("opacity", 0)
         .html(
-          `<button id="closePanel" style="position:absolute; top:5px; right:5px;">X</button>
+          `<button id="closePanel" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer;">X</button>
            <h3>${d.title}</h3>
            <p><strong>Artist:</strong> ${d.artistDisplayName}</p>
            <p><strong>Year:</strong> ${d.objectEndDate}</p>
@@ -118,16 +131,6 @@ export function renderD3(data) {
         .duration(300)
         .style("opacity", 1);
 
-      // Move painting smoothly to the center
-      painting
-        .transition()
-        .duration(300)
-        .attr("x", centerX)
-        .attr("y", imageY) // Ensure Y remains unchanged
-        .attr("width", 250)
-        .attr("height", 250);
-
-      // Close panel functionality
       setTimeout(() => {
         d3.select("#closePanel").on("click", function () {
           d3.select(".panel")
@@ -155,18 +158,5 @@ export function renderD3(data) {
     .attr("x1", (d) => x(d.objectEndDate) + 100)
     .attr("x2", (d) => x(d.objectEndDate) + 100);
 
-  // Close panels when clicking on empty space
-  svg.on("mousemove", function (event) {
-    const target = event.target;
-    if (target.tagName !== "image") {
-      d3.selectAll(".panel").remove();
-    }
-  });
-
-  // svg.on("mouseout", function () {
-  //   d3.selectAll(".panel").remove();
-  // });
-
-  // Call zoom function
   d3.select("svg").call(zoom);
 }
