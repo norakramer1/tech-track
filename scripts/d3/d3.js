@@ -50,6 +50,7 @@ export function renderD3(data) {
   svg
     .append("g")
     .attr("id", "lines")
+    .attr("clip-path", "url(#clipPath)") // Apply clipping
     .selectAll("line")
     .data(data)
     .enter()
@@ -100,25 +101,54 @@ export function renderD3(data) {
     .attr("y", height - 340)
     .style("border-radius", "10px") // Rounded corners
     .on("click", function (e, d) {
+      const clickedPainting = d3.select(this);
+
+      // If clicking the already selected painting, reset it
+      if (
+        selectedPainting &&
+        selectedPainting.node() === clickedPainting.node()
+      ) {
+        selectedPainting
+          .transition()
+          .duration(800)
+          .attr("x", x(d.objectEndDate)) // Reset X position
+          .attr("width", 200)
+          .attr("height", 200);
+
+        d3.select("#paintings").node().appendChild(selectedPainting.node()); // Send back
+        selectedPainting = null;
+
+        d3.select(".panel") // Hide the panel
+          .transition()
+          .duration(300)
+          .style("opacity", 0)
+          .remove();
+
+        return; // Exit function to prevent further execution
+      }
+
+      // If there's an already selected painting, reset it
       if (selectedPainting) {
-        // Reset the previously selected painting to its original size (200px)
         selectedPainting
           .transition()
           .duration(800)
           .attr("x", x(selectedPainting.datum().objectEndDate))
           .attr("width", 200)
           .attr("height", 200);
+
+        d3.select("#paintings").node().appendChild(selectedPainting.node()); // Send back
       }
-      selectedPainting = d3.select(this);
-      const paintingX = x(d.objectEndDate);
+
+      // Set the new selected painting
+      selectedPainting = clickedPainting;
+      d3.select("#paintings").node().appendChild(selectedPainting.node()); // Bring to front
+
       const centerX = width / 2 - 300;
 
-      // Calculate a percentage scale factor for the image (e.g., 1.5 means 150% of the original size)
-      const scaleFactor = 1.5; // Set desired scaling factor here, e.g., 1.5 for 150%
-
-      // Apply the scaling to the image size
-      const newWidth = 200 * scaleFactor; // 200px is the initial width
-      const newHeight = 200 * scaleFactor; // 200px is the initial height
+      // Apply scaling
+      const scaleFactor = 1.5;
+      const newWidth = 200 * scaleFactor;
+      const newHeight = 200 * scaleFactor;
 
       d3.selectAll(".panel").remove();
 
@@ -136,29 +166,42 @@ export function renderD3(data) {
         .attr("class", "panel")
         .style("position", "absolute")
         .style("top", "50%")
-        .style("left", `${centerX + 400}px`)
+        .style("left", `${centerX + 450}px`) // Adjusted for wider panel
         .style("transform", "translateY(-50%)")
-        .style("max-width", "400px")
-        .style("max-height", "500px")
-        .style("background", "#1e1f24") // Dark background to match the app
-        .style("color", "#c5c6d0") // Light text color for contrast
-        .style("padding", "20px")
+        .style("max-width", "40vw")
+        .style("max-height", "70vh")
+        .style("overflow-y", "auto")
+        .style("background", "#1e1f24")
+        .style("color", "#c5c6d0")
+        .style("padding", "30px 50px 30px 30px")
         .style("z-index", 1000)
-        .style("box-shadow", "0px 4px 6px rgba(0,0,0,0.2)") // Subtle shadow for the panel
-        .style("border", "1px solid #c5c6d0") // Rounded corners to match the UI style
+        .style("box-shadow", "0px 4px 6px rgba(0,0,0,0.2)")
         .style("opacity", 0)
         .style("transition", "opacity 0.3s ease-in-out")
         .html(
-          `<button id="closePanel" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 18px; cursor: pointer; color: #f4b942;">X</button>
-           <h3>${d.title}</h3>
-            <h4 class="info-title">Artist</h4>
-              <p class="info-text">${d.artistDisplayName}</p>
-            <h4 class="info-title">Year</h4>
-              <p class="info-text">${d.objectEndDate}</p>
-            <h4 class="info-title">About</h4>
-              <p class="info-text">${d.artistDisplayBio}</p>
-            <h4 class="info-title">Credit</h4>
-              <p class="info-text">${d.creditLine}</p>`
+          `<button id="closePanel" style="
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+          ">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 6L18 18" stroke="#c5c6d0" stroke-width="2" stroke-linecap="round"/>
+            <path d="M18 6L6 18" stroke="#c5c6d0" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+         <h3>${d.title}</h3>
+         <h4 class="info-title">Artist</h4>
+           <p class="info-text">${d.artistDisplayName}</p>
+         <h4 class="info-title">Year</h4>
+           <p class="info-text">${d.objectEndDate}</p>
+         <h4 class="info-title">About</h4>
+           <p class="info-text">${d.artistDisplayBio}</p>
+         <h4 class="info-title">Credit</h4>
+           <p class="info-text">${d.creditLine}</p>`
         )
         .transition()
         .duration(300)
@@ -171,18 +214,26 @@ export function renderD3(data) {
             .duration(300)
             .style("opacity", 0)
             .remove();
+        });
+      }, 100);
 
-          if (selectedPainting) {
-            // Reset the painting to its original size and position
-            selectedPainting
-              .transition()
-              .duration(800)
-              .attr("x", x(selectedPainting.datum().objectEndDate)) // Reset position
-              .attr("width", 200) // Reset width
-              .attr("height", 200); // Reset height
+      setTimeout(() => {
+        d3.select("#closePanel").on("click", function () {
+          d3.select(".panel")
+            .transition()
+            .duration(300)
+            .style("opacity", 0)
+            .remove();
 
-            selectedPainting = null; // Clear selection
-          }
+          selectedPainting
+            .transition()
+            .duration(800)
+            .attr("x", x(selectedPainting.datum().objectEndDate))
+            .attr("width", 200)
+            .attr("height", 200);
+
+          d3.select("#paintings").node().appendChild(selectedPainting.node()); // Send back
+          selectedPainting = null;
         });
       }, 100);
     });
