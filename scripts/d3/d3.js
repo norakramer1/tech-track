@@ -46,6 +46,22 @@ export function renderD3(data) {
     .attr("transform", `translate(0,${height})`)
     .call(xAxis);
 
+  // Add lines connecting paintings to the timeline
+  svg
+    .append("g")
+    .attr("id", "lines")
+    .selectAll("line")
+    .data(data)
+    .enter()
+    .append("line")
+    .attr("class", "painting-line")
+    .attr("y1", 200)
+    .attr("y2", 340)
+    .attr("stroke", "#9499b0")
+    .attr("stroke-width", 1)
+    .attr("x1", (d) => x(d.objectEndDate) + 100)
+    .attr("x2", (d) => x(d.objectEndDate) + 100);
+
   // Add zoom functionality
   const zoom = d3
     .zoom()
@@ -155,25 +171,21 @@ export function renderD3(data) {
             .duration(300)
             .style("opacity", 0)
             .remove();
+
+          if (selectedPainting) {
+            // Reset the painting to its original size and position
+            selectedPainting
+              .transition()
+              .duration(800)
+              .attr("x", x(selectedPainting.datum().objectEndDate)) // Reset position
+              .attr("width", 200) // Reset width
+              .attr("height", 200); // Reset height
+
+            selectedPainting = null; // Clear selection
+          }
         });
       }, 100);
     });
-
-  // Add lines connecting paintings to the timeline
-  svg
-    .append("g")
-    .attr("id", "lines")
-    .selectAll("line")
-    .data(data)
-    .enter()
-    .append("line")
-    .attr("class", "painting-line")
-    .attr("y1", 200)
-    .attr("y2", 340)
-    .attr("stroke", "#9499b0")
-    .attr("stroke-width", 1)
-    .attr("x1", (d) => x(d.objectEndDate) + 100)
-    .attr("x2", (d) => x(d.objectEndDate) + 100);
 
   d3.select("svg").call(zoom);
 }
