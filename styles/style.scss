@@ -19,12 +19,8 @@ body {
   line-height: 1.6;
 }
 
-div.scroll-snap {
-  scroll-snap-type: y mandatory;
-}
-
 section {
-  scroll-snap-align: center;
+ // scroll-snap-align: center;
   padding: 5% 0;
 }
 
@@ -37,11 +33,6 @@ section:first-of-type {
   padding: 0 10%;
 }
 
-section:first-of-type img {
-  max-width: 45%;
-  object-fit: contain;
-  border-radius: 10px;  // Soft rounded corners
-}
 
 section h1 {
   font-size: 4vw;
@@ -93,10 +84,10 @@ div.panel {
   transform: translateY(20px);  // Initial downward position
 }
 
-.panel.show {
-  opacity: 1;
-  transform: translateY(0);  // Smooth slide-in effect
-}
+// .panel.show {
+//   opacity: 1;
+//   transform: translateY(0);  // Smooth slide-in effect
+// }
 
 .painting-line {
   transition: opacity 0.3s ease;
@@ -117,6 +108,10 @@ h3 {
 h3 span {
   font-weight: bold;
   color: $highlight-color;
+}
+
+button {
+  font-family: $font-family-primary;
 }
 
 p.info-text:not(:last-of-type) {
@@ -152,3 +147,55 @@ path.domain {
   opacity: 1;
   transform: translateY(0);  
 }
+
+// /* Modal*/
+// .modal {
+//   display: none;
+//   //position: fixed;
+//   left: 0;
+//   top: 0;
+//   width: 100%; /* Full width */
+//   height: 100%; /* Full height */
+//   background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+// }
+
+// /* Modal Content */
+// .modal-content {
+//   background-color: $shadow-color;
+//   padding: 30px;
+//   margin: 10% auto;
+//   max-width: 50vw;
+  
+// }
+
+// /* Close Button */
+// .close-button {
+//   color: #aaa;
+//   font-size: 28px;
+//   font-weight: bold;
+//   position: absolute;
+//   top: 10px;
+//   right: 20px;
+// }
+
+// .close-button:hover,
+// .close-button:focus {
+//   text-decoration: none;
+//   cursor: pointer;
+// }
+
+// button {
+//   background-color: transparent;
+//   color: white;
+//   padding: 10px 20px;
+//   border: none;
+//   cursor: pointer;
+// }
+
+// button#got-it {
+//   background-color: $bg-color;
+// }
+
+// button#got-it:hover {
+//   background-color: $bg-color;
+// }
