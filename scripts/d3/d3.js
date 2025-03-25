@@ -64,15 +64,32 @@ export function renderD3(data) {
     .attr("x2", (d) => x(d.objectEndDate) + 100);
 
   // Add zoom functionality
+  const minYear = 1400;
+  const maxYear = new Date().getFullYear();
+
+  // Define zoom behavior with strict boundaries
   const zoom = d3
     .zoom()
-    .scaleExtent([1, 80])
+    .scaleExtent([1, 80]) // Zoom limits
+    .translateExtent([
+      [x(minYear), 0],
+      [x(maxYear), height],
+    ]) // Restrict dragging past bounds
     .extent([
       [0, 0],
       [width, height],
     ])
     .on("zoom", function (event) {
-      const newScale = event.transform.rescaleX(x);
+      let newScale = event.transform.rescaleX(x);
+
+      // Prevent panning past min/max years
+      let newDomain = newScale.domain();
+      if (newDomain[0] < minYear) {
+        newScale.domain([minYear, minYear + (newDomain[1] - newDomain[0])]);
+      }
+      if (newDomain[1] > maxYear) {
+        newScale.domain([maxYear - (newDomain[1] - newDomain[0]), maxYear]);
+      }
       xAxis.scale(newScale);
       xAxisG.call(xAxis);
       d3.selectAll("#painting").attr("x", (d) => newScale(d.objectEndDate));
@@ -80,6 +97,9 @@ export function renderD3(data) {
         .attr("x1", (d) => newScale(d.objectEndDate) + 100)
         .attr("x2", (d) => newScale(d.objectEndDate) + 100);
     });
+
+  // Apply zoom behavior
+  d3.select("svg").call(zoom);
 
   let selectedPainting = null;
 

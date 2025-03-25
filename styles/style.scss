@@ -139,7 +139,6 @@ path.domain {
   z-index: 1000;
   opacity: 0;
   transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
-  border-radius: 10px;
   transform: translateY(20px); 
 }
 
@@ -148,54 +147,40 @@ path.domain {
   transform: translateY(0);  
 }
 
-// /* Modal*/
-// .modal {
-//   display: none;
-//   //position: fixed;
-//   left: 0;
-//   top: 0;
-//   width: 100%; /* Full width */
-//   height: 100%; /* Full height */
-//   background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
-// }
+/* Modal*/
+.modal {
+  display: none;
+  //position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+  transition: 0.5s;
+}
 
-// /* Modal Content */
-// .modal-content {
-//   background-color: $shadow-color;
-//   padding: 30px;
-//   margin: 10% auto;
-//   max-width: 50vw;
+/* Modal Content */
+.modal-content {
+  background-color: $shadow-color;
+  padding: 30px;
+  margin: 10% auto;
+  max-width: 50vw;
   
-// }
+}
+button {
+  background-color: white;
+  color: $bg-color;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
 
-// /* Close Button */
-// .close-button {
-//   color: #aaa;
-//   font-size: 28px;
-//   font-weight: bold;
-//   position: absolute;
-//   top: 10px;
-//   right: 20px;
-// }
+button#got-it {
+  background-color: white;
+}
 
-// .close-button:hover,
-// .close-button:focus {
-//   text-decoration: none;
-//   cursor: pointer;
-// }
-
-// button {
-//   background-color: transparent;
-//   color: white;
-//   padding: 10px 20px;
-//   border: none;
-//   cursor: pointer;
-// }
-
-// button#got-it {
-//   background-color: $bg-color;
-// }
-
-// button#got-it:hover {
-//   background-color: $bg-color;
-// }
+button#got-it:hover {
+  background-color: $bg-color;
+  color: white;
+  transition: 0.5s;
+}
