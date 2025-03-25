@@ -10,7 +10,6 @@ async function fetchPaintings(paintingId) {
     return JSON.parse(cachedPainting);
   }
 
-  console.log(`Fetching painting data for ID: ${paintingId}`);
   const response = await fetch(`${API}/${paintingId}`);
   const jsonData = await response.json();
 
@@ -25,11 +24,9 @@ async function getObjectIds() {
   const cachedObjectIds = localStorage.getItem(localStorageKey);
 
   if (cachedObjectIds) {
-    console.log("Using cached object IDs");
     return JSON.parse(cachedObjectIds);
   }
 
-  console.log("Fetching object IDs from API");
   const searchUrl =
     "https://collectionapi.metmuseum.org/public/collection/v1/search?&isHighlight=true&hasImages=true&q=painting&departmentId=11";
   const response = await fetch(searchUrl);

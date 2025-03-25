@@ -16,8 +16,6 @@ export const displayPaintings = async () => {
   );
   // Filter out all repsonses that only display a message ( it means they do not exist or returned nothing)
   let filteredItems = items.filter((item) => !item.message);
-  // Console log of response
-  // console.log(filteredItems);
 
   renderD3(filteredItems);
   storeData(filteredItems);
